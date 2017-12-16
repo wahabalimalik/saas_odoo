@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- View -->
+    	<!-- Form -View -->
+		    <record model="ir.ui.view" id="saas_control_panel.form_database">
+		      <field name="name">saas_control_panel form_database</field>
+		      <field name="model">saas.database</field>
+		      <field name="arch" type="xml">
+		        <form>
+              <header>
+                  <button name="inits" class="oe_highlight" states="init" string="initialize DB" type="object"/>
+                  <button name="auth" class="oe_highlight" states="auth" string="Authenticate DB" type="object"/>
+                  <button name="delete" class="oe_highlight" states="live" string="Delete DB" type="object"/>
+                  <button name="update_mod" class="oe_highlight" states="live" string="Update Module" type="object"/>
+                  <button name="update_usr" class="oe_highlight" states="live" string="Update User" type="object"/>
+                  <field name="state" widget="statusbar" statusbar_visible="auth,live"/>
+              </header>
+		        	<sheet>
+		        		<group>
+		        			<group>
+					          <field name="business_name"/>
+					          <field name="country"/>
+					          <field name="inrollment_date"/>
+		        			</group>
+		        			<group>
+					          <field name="name"/>
+                    <field name="demo"/>
+					          <field name="admin_user" widget ="many2many_tags"/>
+					          <field name="expiry_date"/>
+		        			</group>
+				        </group>
+                <notebook colspan="4">
+                	<page string="Apps &amp; Module" autofocus="autofocus">
+                    <field name="apps" mode="kanban" 
+                    	context="{'default_parent_id': active_id,'search_default_app':1}">
+											<kanban>
+						            <field name="icon"/>
+						            <field name="name"/>
+						            <field name="state"/>
+						            <field name="summary"/>
+						            <templates>
+					              	<t t-name="kanban-box">
+						                <div class="oe_module_vignette oe_kanban_global_click">
+						                	<a t-if="!read_only_mode" type="delete" class="fa fa-times pull-right"/>
+						                  <t t-set="installed" t-value="record.state.raw_value == 'installed'"/>
+						                  <div class="o_kanban_image">
+						                  	<img t-attf-src="#{record.icon.value}" class="oe_module_icon"/>
+						                  </div>
+						                  <div class="oe_module_desc" style="padding-left: 97px;">
+						                    <h4><field name="shortdesc"/></h4>
+						                    <p class="oe_module_name">
+						                       <t t-if="record.summary.raw_value"><field name="summary"/><br/></t>
+						                       <i><field name="name" groups="base.group_no_one"/></i>
+						                    </p>
+						                  </div>
+						                </div>
+					              	</t>
+						            </templates>
+							        </kanban>
+                   	</field>
+                	</page>
+                	<page string="Users" autofocus="autofocus">
+                    <field name="users" mode="kanban">
+											<kanban>
+                        <field name="color"/>
+                        <field name="name"/>
+                        <field name="title"/>
+                        <field name="type"/>
+                        <field name="email"/>
+                        <field name="parent_id"/>
+                        <field name="is_company"/>
+                        <field name="function"/>
+                        <field name="phone"/>
+                        <field name="street"/>
+                        <field name="street2"/>
+                        <field name="zip"/>
+                        <field name="city"/>
+                        <field name="country_id"/>
+                        <field name="mobile"/>
+                        <field name="fax"/>
+                        <field name="state_id"/>
+                        <field name="image"/>
+                        <field name="lang"/>
+                        <templates>
+                          <t t-name="kanban-box">
+                            <t t-set="color" t-value="kanban_color(record.color.raw_value)"/>
+                            <div t-att-class="color + (record.title.raw_value == 1 ? ' oe_kanban_color_alert' : '') + ' oe_kanban_global_click'">
+                              <a t-if="!read_only_mode" type="delete" class="fa fa-times pull-right"/>
+                              <div class="o_kanban_image">
+                                <img t-if="record.image.raw_value" t-att-src="'data:image/png;base64,'+record.image.raw_value"/>
+                                <t t-if="!record.image.raw_value">
+                                  <img t-if="record.type.raw_value === 'delivery'" t-att-src="_s + &quot;/base/static/src/img/truck.png&quot;"/>
+                                  <img t-if="record.type.raw_value === 'invoice'" t-att-src="_s + &quot;/base/static/src/img/money.png&quot;"/>
+                                  <t t-if="record.type.raw_value !== 'invoice' &amp;&amp; record.type.raw_value !== 'delivery'">
+                                    <img t-if="record.is_company.raw_value === true" t-att-src="_s + &quot;/base/static/src/img/company_image.png&quot;"/>
+                                    <img t-if="record.is_company.raw_value === false" t-att-src="_s + &quot;/base/static/src/img/avatar.png&quot;"/>
+                                  </t>
+                                </t>
+                              </div>
+                              <div class="oe_kanban_details">
+                                <field name="name"/>
+                                <div t-if="record.function.raw_value"><field name="function"/></div>
+                                <div t-if="record.email.raw_value"><field name="email"/></div>
+                                <div t-if="record.type.raw_value != 'contact'">
+                                  <div>
+                                    <field name="zip"/>
+                                    <field name="city"/>
+                                  </div>
+                                  <field t-if="record.state_id.raw_value" name="state_id"/>
+                                  <field name="country_id"/>
+                                </div>
+                                <div t-if="record.phone.raw_value">Phone: <field name="phone"/></div>
+                                <div t-if="record.mobile.raw_value">Mobile: <field name="mobile"/></div>
+                                <div t-if="record.fax.raw_value">Fax: <field name="fax"/></div>
+                              </div>
+                            </div>
+                          </t>
+                        </templates>
+                       </kanban>
+                   	</field>
+                	</page>
+                </notebook>
+			        </sheet>
+		        </form>
+		      </field>
+		    </record>
+    	<!-- Tree -View -->
+		    <record model="ir.ui.view" id="saas_control_panel.list_database">
+		      <field name="name">saas_control_panel list_database</field>
+		      <field name="model">saas.database</field>
+		      <field name="arch" type="xml">
+		        <tree decoration-info="state == 'live'" decoration-muted="state == 'init'">
+		          <field name="state" invisible ='1'/>
+              <field name="name"/>
+		          <field name="business_name"/>
+		        </tree>
+		      </field>
+		    </record>
+    
+    <!-- Actions -->
+      <!-- actions for Databases -->
+        <record model="ir.actions.act_window" id="saas_control_panel.action_database">
+          <field name="name">Databases</field>
+          <field name="res_model">saas.database</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+    
+    <!-- menuitems -->
+      <!-- menu categories -->
+        <menuitem 
+          name="Databases" 
+          id="saas_control_panel.databases" 
+          parent="saas_control_panel.menu_main_cp"
+          action="saas_control_panel.action_database"
+        />
+  </data>
+</odoo>

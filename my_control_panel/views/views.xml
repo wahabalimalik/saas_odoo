@@ -1,0 +1,36 @@
+<odoo>
+  <data>
+    <record id="my_control_panel_action" model="ir.actions.client">
+        <field name="name">Dashboard</field>
+        <field name="tag">my_control_panel.main</field>
+    </record>
+    
+    <menuitem name="My Control Panel" id="my_control_panel.my_cp" groups="my_control_panel.group_saas_manager"/>
+
+    <menuitem name="Dashboard" id="web_dashboard_menu_1" action="my_control_panel_action" parent="my_control_panel.my_cp" sequence="1" groups="my_control_panel.group_saas_manager"/>
+
+    <!-- App -->
+	    <!-- Action -->
+		    <record id="my_control_panel.apps_action" model="ir.actions.act_window">
+		      <field name="name">Apps</field>
+		      <field name="res_model">ir.module.module</field>
+		      <field name="view_type">form</field>
+		      <field name="view_mode">kanban,tree,form</field>
+		      <field name="context">{'search_default_app':1}</field>
+		      <field name="search_view_id" ref="base.view_module_filter"/>
+		      <field name="help" type="html">
+		        <p><b>No module found!</b></p>
+		        <p>You should try other search criteria.</p>
+		      </field>
+		    </record>
+	    <!-- menuitems -->
+      <menuitem 
+        name="Apps" 
+        id="my_control_panel.apps" 
+        parent="my_control_panel.my_cp"
+        groups="my_control_panel.group_saas_manager"
+        sequence="1"
+        action="my_control_panel.apps_action"
+      />
+  </data>
+</odoo>

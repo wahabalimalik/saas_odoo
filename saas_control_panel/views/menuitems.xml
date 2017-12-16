@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- menuitems -->
+      <!-- Top menu item -->
+        <menuitem 
+          name="Control Panel" 
+          id="saas_control_panel.menu_main_cp"
+        />
+  </data>
+</odoo>

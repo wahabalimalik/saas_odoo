@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>    
+    <!-- menuitems -->
+      <!-- menu categories -->
+        <menuitem 
+          name="Clients" 
+          id="saas_control_panel.clients" 
+          parent="saas_control_panel.menu_main_cp"
+          action="base.action_partner_form"
+        />
+  </data>
+</odoo>
